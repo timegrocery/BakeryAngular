@@ -1,0 +1,103 @@
+<div class="container-fluid">
+  <div class="row py-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-6">
+              <h2 class="text-uppercase">HÓA ÐƠN</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table datatable id="example" class="table table-hover table-bordered dt-bootstrap" cellspacing="0"
+            width="100%">
+            <thead class="table-danger text-center text-uppercase">
+              <tr>
+                <th scope="col" >#</th>
+                <th scope="col">Tên Nhân Viên</th>
+                <th scope="col">Tên Bàn</th>
+                <th scope="col">Thời gian vào</th>
+                <th scope="col">Thời Gian Ra</th>
+                <th scope="col">Tổng Tiền</th>
+                <th scope="col" >Trạng Thái </th>
+                <th scope="col" style="width:20%;"></th>
+              </tr>
+            </thead>
+            <ng-container *ngFor="let HoaDon of hoaDonList, let i =index">
+              <tbody class="text-center p-0">
+                <tr (click)="hide(HoaDon.HoaDon_ID)">
+                  <th scope="row" style="width:3%;">{{i+1}}</th>
+                  <td id="{{'subname_' + HoaDon.HoaDon_ID}}">{{HoaDon.NhanVien}}</td>
+                  <td>{{HoaDon.BanAn}}</td>
+                  <td>{{HoaDon.HoaDon_ThoiGianVao}}</td>
+                  <td>{{HoaDon.HoaDon_ThoiGianRa}}</td>
+                  <td>{{HoaDon.HoaDon_TongTien | number:'1.0' }} VND</td>
+                  <td>{{HoaDon.HoaDon_TrangThai}}</td>
+                  <td>
+                      <button type="button" class="btn btn-success"><i class="fa fa-file-archive-o"
+                        style="font-size: 1.5em;" id="{{'arrow_' + HoaDon.HoaDon_ID}}"></i></button>  &emsp; 
+                    <button type="button" class="btn btn-danger" (click)=onHoaDonDelete(HoaDon.HoaDon_ID) ><i
+                      class="fa fa-trash text-white"></i></button>
+                     
+                  </td>
+                </tr>
+                <tr id="{{'child_' + HoaDon.HoaDon_ID}}" style="display: none;">
+                  <td colspan="8" class="p-0">
+                    <table class="table table-hover table-bordered table-sm mb-0 ">
+                      <thead class="table-primary text-center text-uppercase"> 
+                     
+                        <th scope="col">#</th>
+                        <th scope="col">Tên Món Ăn</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Đơn Giá </th>
+                        <th scope="col">Ghi Chú</th>
+                        
+                        <th scope="col "></th>
+                        
+                      </thead>
+                      <ng-container *ngFor="let CtHoaDon of ctHoaDonList; let i = index">
+                        <ng-container *ngIf="CtHoaDon.HoaDon_ID == HoaDon.HoaDon_ID">
+                          <tbody class="text-center">
+                            <tr (click)="hide(CtHoaDon.HoaDon_ID)">
+                            
+                              <th>{{i+1}}</th>
+                              <td>{{CtHoaDon.MonAn_Ten}}</td>
+                              <td><img src="../../../assets/img/course/{{CtHoaDon.MonAn_HinhAnh}}" alt="food" style="width: 60px; height: 60px;"> </td>
+                              <td>{{CtHoaDon.ChiTietHD_SoLuong}}</td>
+                              <td>{{CtHoaDon.ChiTietHD_DonGia | number:'1.0' }} VND</td>
+                              <td>{{CtHoaDon.ChiTietHD_GhiChu}}</td>                            
+                              <td> <button type="button" class="btn btn-danger" (click)=onChiTietHoaDonDelete(CtHoaDon.CTHoaDon_ID)  ><i
+                                  class="fa fa-trash text-white"></i></button></td>
+                            </tr>
+                          </tbody>
+                        </ng-container>
+                      </ng-container>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-container>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js">
+</script>
+<script src="../plugins/datatable/datatables.min.js"></script>
+<script src="../plugins/datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+  });
+
+</script>

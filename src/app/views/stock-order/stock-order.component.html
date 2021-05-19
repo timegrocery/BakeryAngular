@@ -1,0 +1,426 @@
+<!--change-->
+<div class="container-fluid">
+  <div class="row py-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-6">
+              <h2 class="text-uppercase">ĐƠN NHẬP THỰC PHẨM</h2>
+            </div>
+            <div class="col-6 text-right">
+              <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#ThemDon"><i
+                  class="fa fa-plus"></i> Thêm đơn</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table datatable id="example" class="table table-hover table-bordered dt-bootstrap" cellspacing="0"
+            width="100%">
+            <thead class="table-danger text-center text-uppercase">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nhà cung cấp</th>
+                <th scope="col">Nhân viên nhập</th>
+                <th scope="col">Ngày nhập</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col" style="width:25%;"></th>
+              </tr>
+            </thead>
+            <!-- <tbody class="text-center">
+              <tr *ngFor="let DonNhapNL of donNhapNLList, let i =index">
+                <th scope="row">{{DonNhapNL.DonNhap_ID}}</th>
+                <td>{{DonNhapNL.NCC_Ten}}</td>
+                <td>{{DonNhapNL.NV_Ten}}</td>
+                <td>{{DonNhapNL.DonNhap_NgayNhap}}</td>
+                <td>{{DonNhapNL.DonNhap_TongTien}}</td>
+                <td>
+                  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ChiTietDonNhap"
+                    aria-expanded="false" (click)="getDonNhap(DonNhapNL.DonNhap_ID)" aria-controls="collapseExample">
+                    <i class="fa fa-file text-white"></i>
+                  </button>
+                  &emsp;
+                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Edit">
+                    <i class="fa fa-edit text-white"></i></button>
+                  &emsp; <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Delete"><i
+                      class="fa fa-trash text-white"></i></button>
+                </td>
+              </tr>
+              <tr class="collapse out" id="ChiTietDonNhap" style="background-color: white;">
+                <td colspan="6">
+                  <div class="container-fluid">
+                    <table class="table table-hover table-bordered ">
+                      <thead class="table-primary text-center text-uppercase">
+                        <th scope="col">#</th>
+                        <th scope="col">Tên nguyên liệu</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Đơn vị tính</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Thành tiền</th>
+                        <th scope="col"> <button type="button" class="btn btn-outline-secondary" data-toggle="modal"
+                            data-target="#AddChiTiet"><i class="fa fa-plus"></i>
+                            Thêm
+                            chi tiết vào đơn</button>
+                        </th>
+                      </thead>
+                      <tbody class="text-center">
+                        <tr *ngFor="let CtDonNhap of chiTietDonNhapNLList, let i =index">
+                          <th scope="row">{{CtDonNhap.CTDonNhap_ID}}</th>
+                          <td>{{CtDonNhap.NL_Ten}}</td>
+                          <td>{{CtDonNhap.ChiTietDon_SoLuong}}</td>
+                          <td>{{CtDonNhap.ChiTietDon_DonViTinh}}</td>
+                          <td>{{CtDonNhap.ChiTietDon_DonGia}}</td>
+                          <td>{{CtDonNhap.ChiTietDon_ThanhTien}}</td>
+                          <td>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#EditChiTiet"
+                              (click)="getCtDonNhap(CtDonNhap.CTDonNhap_ID)">
+                              <i class="fa fa-edit text-white"></i></button>
+                            &emsp; <button type="button" class="btn btn-danger" data-toggle="modal"
+                              (click)=onChiTietDonNhapDelete(CtDonNhap.CTDonNhap_ID)><i
+                                class="fa fa-trash text-white"></i></button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </tbody> -->
+            <ng-container *ngFor="let DonNhapNL of donNhapNLList; let i = index">
+              <tbody class="text-center p-0">
+                <tr (click)="hide(DonNhapNL.DonNhap_ID)">
+                  <th scope="row" style="width:3%;">{{i+1}}</th>
+                  <td id="{{'subname_' + DonNhapNL.DonNhap_ID}}">{{DonNhapNL.NCC_Ten}}</td>
+                  <td>{{DonNhapNL.NV_Ten}}</td>
+                  <td>{{DonNhapNL.DonNhap_NgayNhap}}</td>
+                  <td>{{DonNhapNL.DonNhap_TongTien | number:'1.0' }} VND</td>
+                  <td>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Edit"
+                      (click)="getDonNhap(DonNhapNL.DonNhap_ID)">
+                      <i class="fa fa-edit text-white"></i></button>
+                    &emsp; <button type="button" class="btn btn-danger"
+                      (click)="onDonNhapNLDelete(DonNhapNL.DonNhap_ID)"><i class="fa fa-trash text-white"></i></button>
+                    &emsp;
+                    <button type="button" class="btn btn-success"><i class="fa fa-file-archive-o"
+                        style="font-size: 1.5em;" id="{{'arrow_' + DonNhapNL.DonNhap_ID}}"></i></button>
+                  </td>
+                </tr>
+                <tr id="{{'child_' + DonNhapNL.DonNhap_ID}}" style="display: none;">
+                  <td colspan="6" class="p-0">
+                    <table class="table table-hover table-bordered table-sm mb-0 ">
+                      <thead class="table-primary text-center text-uppercase">
+                        <th scope="col"></th>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên nguyên liệu</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Đơn vị tính</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Thành tiền</th>
+                        <th scope="col"> <button type="button" class="btn btn-outline-secondary" data-toggle="modal"
+                            data-target="#AddChiTiet" (click)="getCtDonNhap(0, DonNhapNL.DonNhap_ID)"><i class="fa fa-plus"></i>
+                            Thêm
+                            chi tiết</button>
+                        </th>
+                      </thead>
+                      <ng-container *ngFor="let CtDonNhap of chiTietDonNhapNLList; let i = index">
+                        <ng-container *ngIf="CtDonNhap.DonNhap_ID == DonNhapNL.DonNhap_ID">
+                          <tbody class="text-center">
+                            <tr (click)="hide(CtDonNhap.DonNhap_ID)">
+                              <td style="width: 5%;"></td>
+                              <th>{{i+1}}</th>
+                              <td>{{CtDonNhap.NL_Ten}}</td>
+                              <td>{{CtDonNhap.ChiTietDon_SoLuong}}</td>
+                              <td>{{CtDonNhap.ChiTietDon_DonViTinh}}</td>
+                              <td>{{CtDonNhap.ChiTietDon_DonGia | number:'1.0' }} VND</td>
+                              <td>{{CtDonNhap.ChiTietDon_ThanhTien | number:'1.0' }} VND</td>
+                              <td>
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                  data-target="#EditChiTiet" (click)="getCtDonNhap(CtDonNhap.CTDonNhap_ID, CtDonNhap.DonNhap_ID)">
+                                  <i class="fa fa-edit text-white"></i></button>
+                                &emsp; <button type="button" class="btn btn-danger" data-toggle="modal"
+                                  (click)=onChiTietDonNhapDelete(CtDonNhap.CTDonNhap_ID)><i
+                                    class="fa fa-trash text-white"></i></button></td>
+                            </tr>
+                          </tbody>
+                        </ng-container>
+                      </ng-container>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-container>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+  id="ThemDon">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-uppercase" id="exampleModalLabel">Thêm đơn</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addDonNhap">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nhà cung cấp</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="exampleFormControlSelect2" name="TenNhaCC"
+                formControlName="tenNhaCungCap">
+                <option *ngFor="let NhaCungCap of nhaCungCapList" value="{{NhaCungCap.NCC_ID}}">{{NhaCungCap.NCC_Ten}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nhân Viên</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="exampleFormControlSelect2" name="TenNV" formControlName="tenNhanvien">
+                <option *ngFor="let NhanVien of nhanVienList" value="{{NhanVien.NV_ID}}">{{NhanVien.NV_Ten}}</option>
+              </select>
+
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Ngày nhập</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" placeholder="Nhập tên nhà cung cấp" name="NgayNhap"
+                formControlName="ngayNhap">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tổng tiền</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" placeholder="Nhập Tổng Tiền" name="TongTien"
+                formControlName="tongTien">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="onDonNhapNLAdd()">Thêm đơn</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+  id="Edit">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-uppercase" id="exampleModalLabel">Chỉnh sửa đơn</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editDonNhap">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nhà cung cấp</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="exampleFormControlSelect2" name="TenNhaCC"
+                formControlName="tenNhaCungCap">
+                <option *ngFor="let NhaCungCap of nhaCungCapList" value="{{NhaCungCap.NCC_ID}}">{{NhaCungCap.NCC_Ten}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nhân Viên</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="exampleFormControlSelect2" name="TenNV" formControlName="tenNhanvien">
+                <option *ngFor="let NhanVien of nhanVienList" value="{{NhanVien.NV_ID}}">{{NhanVien.NV_Ten}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Ngày nhập</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" name="NgayNhap" formControlName="ngayNhap" [value]="ngayNhap" [(ngModel)]="ngayNhap">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tổng tiền</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Tổng Tiền" name="TongTien"
+                formControlName="tongTien">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-primary" (click)="onDonNhapNLEdit()" data-dismiss="modal">Cập nhập</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+  id="AddChiTiet">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-uppercase" id="exampleModalLabel">Thêm chi tiết đơn</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addCtDonNhap">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tên nguyên liệu</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="exampleFormControlSelect2" name="tenNL" formControlName="nl">
+                <option *ngFor="let row of nguyenLieuList" value="{{row.NL_ID}}">{{row.NL_Ten}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Đơn vị tính</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Nhập Đơn vị tính" name="DVT"
+                formControlName="donViTinh">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Số lượng</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" [(ngModel)]="quantity1" (change)="update_tt()" placeholder="Nhập lượng nguyên liệu" name="SLNguyenLieu"
+                formControlName="soLuong">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Đơn giá</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" [(ngModel)]="price1" (change)="update_tt()" placeholder="Nhập giá" name="gia" formControlName="gia">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Thành tiền</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [(ngModel)]="total1" placeholder="Thành tiền" name="ThanhTien"
+                formControlName="total">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal"
+          (click)="onChiTietDonNhapAdd()">Thêm nguyên
+          liệu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+  id="EditChiTiet">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-uppercase" id="exampleModalLabel">Chỉnh sửa chi tiết đơn</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editCtDonNhap">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tên nguyên liệu</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="exampleFormControlSelect2" name="tenNL" formControlName="nl">
+                <option *ngFor="let row of nguyenLieuList" value="{{row.NL_ID}}">{{row.NL_Ten}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Đơn vị tính</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Nhập Đơn vị tính" name="DVT"
+                formControlName="donViTinh">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Số lượng</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" [(ngModel)]="quantity1" (change)="update_tt()" placeholder="Nhập lượng nguyên liệu" name="SLNguyenLieu"
+                formControlName="soLuong">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Đơn giá</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" [(ngModel)]="price1" (change)="update_tt()" placeholder="Nhập giá" name="gia" formControlName="gia">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Thành tiền</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [(ngModel)]="total1" placeholder="Thành tiền" name="ThanhTien"
+                formControlName="total">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" data-dismiss="modal" (click)="onChiTietDonNhapEdit()" class="btn btn-primary">Cập
+          nhập</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+  id="DeleteChiTiet">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-uppercase" id="exampleModalLabel">Xóa chi tiết đơn</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label class="col-12 col-form-label text-center">
+              <h2>BẠN CÓ CHẮC MUỐN XÓA CHI TIẾT ĐƠN NÀY</h2>
+            </label>
+            <input type="text" class="form-control" name="MaNCC" hidden>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-danger">Xác nhận</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--end change-->
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js">
+</script>
+<script src="../plugins/datatable/datatables.min.js"></script>
+<script src="../plugins/datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+  });
+
+</script>

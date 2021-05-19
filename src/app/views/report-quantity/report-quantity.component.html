@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="card-header text-right">
+    <div class="row">
+      <div class="col-4">
+        <input type="datetime-local" class="form-control" id="datefrom" [(ngModel)]="datefrom" required>
+      </div>
+      <div class="col-4">
+        <input type="datetime-local" class="form-control" id="dateto" [(ngModel)]="dateto" required>
+      </div>
+      <div class="col-4">
+        <button type="submit" class="btn bg-primary" (click)="search()">Search</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- <span>
+      <div *ngIf="{sl:0 }; let variable">
+        <ng-container *ngFor="let row of thongKe, let i = index">
+          <ng-container *ngIf="sl < row.MonAn_SoLuong">
+            <div *ngLet="sl = row.MonAn_SoLuong"></div>
+          </ng-container>
+        </ng-container>
+        TOP CÁC MÓN ĂN BÁN CHẠY NHẤT {{datefrom}} -{{dateto}}
+        <table class="table table-bordered table-striped table-hover bg-white text-center">
+          <thead class="bg-info">
+            <tr>
+              <th>#</th>
+              <th>Món ăn</th>
+              <th>Số lượng đã bán</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let row of thongKe, let i = index">
+                <ng-container *ngIf="row.MonAn_SoLuong == sl">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{row.MonAn_Ten}}</td>
+                <td>{{row.MonAn_SoLuong}}</td>
+              </tr>
+            </ng-container>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </span> -->
+    <table class="table table-bordered table-striped table-hover bg-white text-center">
+      <thead class="bg-info">
+        <tr>
+          <th>#</th>
+          <th>Món ăn</th>
+          <th>Số lượng đã bán</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of thongKe, let i = index">
+          <tr >
+            <td>{{i+1}}</td>
+            <td align = "left">{{row.MonAn_Ten}}</td>
+            <td align ="right">{{row.MonAn_SoLuong}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+

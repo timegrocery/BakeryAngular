@@ -1,0 +1,76 @@
+<div class="card">
+  <div class="card-header text-right">
+    <div class="row">
+      <div class="col-4">
+        <input type="datetime-local"  class="form-control" id="datefrom" [formControl]="datefrom" required>
+      </div>
+      <div class="col-4">
+        <input type="datetime-local" class="form-control" id="dateto" [formControl]="dateto" required>
+      </div>
+      <div class="col-4">
+        
+        <!--<button type="submit" class="btn bg-primary" (click)="check()">Search</button>-->
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+  
+    <table class="table table-bordered table-striped table-hover bg-white text-center">
+      <thead class="bg-info">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Mã hóa đơn</th>
+          <th scope="col">Tên Nhân Viên</th>
+          <th scope="col">Thời gian xuất hóa đơn</th>
+          <th scope="col">Tổng tiền</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let HoaDon of reports, let i = index">
+          <tr *ngIf="HoaDon.HoaDon_ThoiGianRa >= datefrom.value && HoaDon.HoaDon_ThoiGianRa <= dateto.value"
+            (click)="hide(HoaDon.HoaDon_ID)">
+            <td>{{i+1}}</td>
+            <th>#{{HoaDon.HoaDon_ID}}</th>
+            <td>{{HoaDon.NhanVien}}</td>
+            <td>{{HoaDon.HoaDon_ThoiGianRa}}</td>
+            <td>{{HoaDon.HoaDon_TongTien | number:'1.0' }} VND</td>
+          </tr>
+          <tr id="{{'child_' + HoaDon.HoaDon_ID}}" style="display: none;">
+            <td colspan="8" class="p-0">
+              <table class="table table-hover table-bordered table-sm mb-0 ">
+                <thead class="table-primary text-center text-uppercase">
+
+                  <th scope="col">#</th>
+                  <th scope="col">Tên Món Ăn</th>
+                  <th scope="col">Hình ảnh</th>
+                  <th scope="col">Số lượng</th>
+                  <th scope="col">Đơn Giá </th>
+                  <th scope="col">Ghi Chú</th>                  
+                </thead>
+                <ng-container *ngFor="let CtHoaDon of ctHoaDonList; let i = index">
+                  <ng-container *ngIf="CtHoaDon.HoaDon_ID == HoaDon.HoaDon_ID">
+                    <tbody class="text-center">
+                      <tr (click)="hide(CtHoaDon.HoaDon_ID)">
+                        <th>{{i+1}}</th>
+                        <td>{{CtHoaDon.MonAn_Ten}}</td>
+                        <td><img src="../../../assets/img/course/{{CtHoaDon.MonAn_HinhAnh}}" alt="food"
+                            style="width: 60px; height: 60px;"> </td>
+                        <td>{{CtHoaDon.ChiTietHD_SoLuong}}</td>
+                        <td>{{CtHoaDon.ChiTietHD_DonGia | number:'1.0' }} VND</td>
+                        <td>{{CtHoaDon.ChiTietHD_GhiChu}}</td>                       
+                      </tr>
+                    </tbody>
+                  </ng-container>
+                </ng-container>
+              </table>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <p class="text-right"> <button type="submit" class="btn bg-danger" (click)="getTotal()"><i class="fa fa-money"></i>
+        &nbsp; Tổng tiền</button>
+      &nbsp; {{total | number:'1.0' }} VND
+    </p>
+  </div>
+</div>

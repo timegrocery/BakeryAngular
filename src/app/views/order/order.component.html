@@ -1,0 +1,297 @@
+<div class="container-fluid p-0">
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+        <nav>
+            <div class="nav nav-tabs mr-auto" id="nav-tab" role="tablist">
+              <a class="nav-item nav-link active" id="nav-dine-tab" data-toggle="tab" href="#nav-dine" role="tab" aria-controls="nav-dine" aria-selected="true">BÀN ĂN</a>
+              <a class="nav-item nav-link" id="nav-food-tab" data-toggle="tab" href="#nav-food" role="tab" aria-controls="nav-food" aria-selected="false">THỰC ĐƠN</a>
+            </div>
+          </nav>
+          
+          <div class="tab-content" id="nav-tabContent">
+             <!-- DANH SACH TAT CA BAN AN -->
+            <div class="tab-pane fade show active" id="nav-dine" role="tabpanel" aria-labelledby="nav-dine-tab">
+                <tabset [justified]="true" type="pills">
+                <tab heading="Danh Sách Bàn Ăn">
+                  <carousel [interval]="0">
+                    <slide>
+                      <!-- BAN THUONG -->
+                      <div class="row p-0 m-0" id="test">
+                        <div  (click)="getHoaDon(BanAn.Ban_ID)" *ngFor="let BanAn of banAnList, let i =index" class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0 text-center">
+                      
+                          
+                          <button [ngClass]="{'bg-success': BanAn.Ban_TrangThai === 'Đang bận' }" id="bt-table" (click)="getBanAn(BanAn.Ban_ID)">
+                            <div id="a" [ngClass]="{'bg-success': BanAn.Ban_TrangThai === 'Đang bận' }" class="card text-center">
+                              <div class="card-img-top">
+                                <img src="assets/img/icontable.png" class="img-fluid" alt="banan">
+                              </div>
+                              <div  class="card-body p-0 ">
+                                <p class="card-title">{{BanAn.Ban_Ten}}</p>
+                                <p class="card-text">Số người: <span>{{BanAn.Ban_SoNguoi}}</span></p>
+                                <p class="card-text">Loại: <span>{{BanAn.Ban_Loai}}</span></p>
+                                <!-- <p class="card-text">Status: <span>{{BanAn.Ban_TrangThai}}</span></p> -->
+                              </div>
+                            </div>
+                          </button>
+                        </div>
+                       
+                      </div>
+                    </slide>
+                  </carousel>
+                </tab>
+              </tabset>
+            </div>
+           <!-- DANH SACH MON AN -->
+            <div class="tab-pane fade vh-100 " id="nav-food" role="tabpanel" style="overflow-y: scroll;" aria-labelledby="nav-food-tab">
+                <tabset [justified]="true" type="pills">
+                  <!-- MON AN -->
+                    <tab heading="Danh sách món ăn">
+                      <carousel [interval]="0">
+                      
+                          <div  class="row p-0 m-0 scrollbar-ripe-malinka" id="test">
+                            <div *ngFor="let MonAn of monAnList, let i =index" class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
+                              <button id="bt-menu" (click)="getMonAn(MonAn.MonAn_ID, MonAn.MonAn_Ten, MonAn.MonAn_Gia)">
+                                <div class="card">
+        
+                                  <img src="../../../assets/img/course/{{MonAn.MonAn_HinhAnh}}" class="img-fluid2"
+                                    alt="{{MonAn.MonAn_Ten}}">
+        
+                                  <div class="card-body p-0">
+                                    <p class="tieude">{{MonAn.MonAn_Ten}}</p>
+                                    <p class="giatien">{{MonAn.MonAn_Gia | number:'1.0' }} VND</p>
+                                  </div>
+                                </div>
+                              </button>
+                            </div>
+                         
+                          </div>
+                       
+                       
+                      </carousel>
+                    </tab>
+                    <!-- NUOC UONG -->
+                    <!-- <tab heading="Nước uống">
+                      <carousel [interval]="0">
+                        <slide>
+                          <div class="row p-0 m-0" id="test">
+                            <div *ngFor="let Nuoc of drinkList, let i =index" class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
+                              <button id="bt-menu" (click)="getMonAn(Drink.Nuoc_ID, Drink.Nuoc_Ten, Drink.Nuoc_Gia)">
+                                <div class="card">
+        
+                                  <img src="assets/img/course/{{Nuoc.Nuoc_HinhAnh}}" class="img-fluid2" alt="{{Nuoc.Nuoc_HinhAnh}}">
+        
+                                  <div class="card-body p-0">
+                                    <p class="tieude">{{Nuoc.Nuoc_Ten}}</p>
+                                    <p class="giatien">{{Nuoc.Nuoc_Gia}}đ</p>
+                                  </div>
+                                </div>
+                              </button>
+                            </div>
+                       
+                          </div>
+                        </slide>
+                      </carousel>
+                    </tab> -->
+                  </tabset>
+            </div>
+          </div>
+    </div>
+    <!-- PHAN HOA DON -->
+    <div class="col-lg-6 bg-white h-auto p-2">
+      <!--Hóa đơn + tạo mới-->
+      <nav class="navbar nav-tabs navbar-expand-lg navbar-light my-2" id="main">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active" >
+              <a class="nav-link" href="">HÓA ĐƠN <span *ngFor="let chiTietHoaDon of chiTietHD | slice:0:1;"> #{{chiTietHoaDon.HoaDon_ID}}</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href=""><i class="fa fa-plus" text-center></i></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="row" id="info">
+        <div class="col-3">
+          <h6><i class="fa fa-table text-dark"> Bàn: <span><strong>#{{number}}</strong> </span></i></h6>
+        </div>
+        <div class="col-7">
+
+        </div>
+      </div>
+      <!--Ô chứa sản phẩm-->
+      <div class="form-group overflow-auto" style="height:270px;">
+        <!--Danh sách sản phẩm-->
+        <table id="table" class="table table-borderless text-center">
+          <tr class="border-bottom">
+            <th></th>
+            <th>#</th>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Thành tiền</th>
+          </tr>
+          <tr class="border-bottom" *ngFor="let chiTietHoaDon of chiTietHD, let i =index" >
+            <td> <button type="button" class="btn btn-danger" (click)="deleteCtHoaDon(chiTietHoaDon)"><i
+              class="fa fa-trash text-white" ></i></button></td>
+              <th scope="row">{{i+1}}</th>
+            <td>
+              <i class="text-danger"></i>
+              {{chiTietHoaDon.CTHoaDon_Name}}
+            </td>
+            <td>
+              <input type="number" id="{{'ctma_' + chiTietHoaDon.CTHoaDon_ID}}" value="{{chiTietHoaDon.ChiTietHD_SoLuong}}"  class="form-control prc text-center " style="width: 65px;background-color: white;" (change) = "edit(chiTietHoaDon.CTHoaDon_ID)" >
+            </td>
+            <td>
+                                
+            <input type="number" value="{{chiTietHoaDon.ChiTietHD_DonGia}}"  class="form-control text-right " style="width: 105px;background-color: white;" readonly>
+            </td>
+            <td>
+              <input type="number" value="{{chiTietHoaDon.ChiTietHD_SoLuong  * chiTietHoaDon.ChiTietHD_DonGia}}"  class=" form-control text-center" style="background-color: white;" readonly>
+            </td>
+          </tr>
+                  
+          <!--Scroll test thành công-->
+        </table>
+        
+      </div>
+      <!--Các nút-->
+      <div class="mt-5" >
+        <div class="row justify-content-end">
+            <div class="col-4" >
+                <span></span>           
+              </div>
+            <div class="col-4 float-right" >
+              <span ><strong>Tổng tiền: </strong></span>             
+            </div>
+            <div class="col-4" >              
+              <input type="number" value="{{total}}" class="form-control text-center font-weight-bold "  name="total" [(ngModel)]="total1"  id="val" readonly/>
+            </div>
+          </div>
+        
+        <div class="row mt-2 float-right modal-footer">
+            <!-- <div class="col-auto">
+                <button type="submit" (click)="updateStatusTable()" class="btn bg-warning p-3"><b>Lưu đơn</b></button>
+              </div> -->
+          <div class="col-auto">
+            <button type="submit"  data-toggle="modal" data-target="#thanhToan"  class="btn bg-success p-3"><b>Thanh toán</b></button>
+          </div>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+id="thanhToan">
+<div class="modal-dialog modal-xl">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title text-uppercase" id="exampleModalLabel">Thanh Toán</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form >
+        
+          <div class="col-auto bg-white h-auto p-2">
+              <!--Hóa đơn + tạo mới-->
+              <nav class="navbar nav-tabs navbar-expand-lg navbar-light my-2" id="main">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active" >
+                      <a class="nav-link" href="">HÓA ĐƠN <span *ngFor="let chiTietHoaDon of chiTietHD | slice:0:1;"> #{{chiTietHoaDon.HoaDon_ID}}</span></a>
+                    </li>
+                    
+                  </ul>
+                </div>
+              </nav>
+              <div class="row" id="info">
+                <div class="col-3">
+                  <h6><i class="fa fa-table text-dark"> Bàn: <span><strong>#{{number}}</strong> </span></i></h6>
+                </div>
+                <div class="col-7">
+        
+                </div>
+              </div>
+              <!--Ô chứa sản phẩm-->
+              <div class="form-group " >
+                <!--Danh sách sản phẩm-->
+                <table id="table" class="table table-borderless text-center">
+                  <tr class="border-bottom">
+                  
+                    <th>#</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                  </tr>
+                  <tr class="border-bottom" *ngFor="let chiTietHoaDon of chiTietHD, let i =index" >
+                    
+                      <th scope="row">{{i+1}}</th>
+                    <td>
+                      <i class="text-danger"></i>
+                      {{chiTietHoaDon.CTHoaDon_Name}}
+                    </td>
+                    <td>
+                      <input type="number" id="{{'ctma_' + chiTietHoaDon.CTHoaDon_ID}}" value="{{chiTietHoaDon.ChiTietHD_SoLuong}}"  class="form-control prc text-center " style="width: 65px;background-color: white;" (change) = "edit(chiTietHoaDon.CTHoaDon_ID)" readonly>
+                    </td>
+                    <td>
+                        
+                        <input type="number" value="{{chiTietHoaDon.ChiTietHD_DonGia}}"  class="form-control text-right " style="width: 105px;background-color: white;" readonly>
+                    </td>
+                    <td>
+                      <input type="number" value="{{chiTietHoaDon.ChiTietHD_SoLuong  * chiTietHoaDon.ChiTietHD_DonGia}}"  class=" form-control text-center" style="background-color: white;" readonly>
+                    </td>
+                  </tr>
+                          
+                  <!--Scroll test thành công-->
+                </table>
+                
+              </div>
+              <!--Các nút-->
+              <div class="mt-5" >
+                <div class="row justify-content-end">
+                    <div class="col-4" >
+                        <span></span>           
+                      </div>
+                    <div class="col-4 float-right" >
+                      <span ><strong>Tổng tiền: </strong></span>             
+                    </div>
+                    <div class="col-4" >              
+                      <input type="number" value="{{total}}" class="form-control text-center font-weight-bold "  name="total" [(ngModel)]="total1"  id="val" readonly/>
+                    </div>
+                  </div>
+                
+                <div class="row mt-2 float-right">
+                   
+                  <div class="col-auto ">
+                    <button type="submit" (click)="pay()" data-dismiss="modal" class="btn bg-success p-3"><b>Thanh toán</b></button>
+                  </div>
+                  
+                  
+                </div>
+              </div>
+            </div>
+           
+        
+      </form>
+    </div>
+   
+
+  </div>
+</div>
+</div>
+
+
+

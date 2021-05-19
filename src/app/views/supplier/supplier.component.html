@@ -1,0 +1,162 @@
+<div class="container-fluid">
+  <div class="row py-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-6">
+              <h2 class="text-uppercase">DANH SÁCH NHÀ CUNG CẤP</h2>
+            </div>
+            <div class="col-6 text-right">
+              <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#AddSupp"><i
+                  class="fa fa-plus"></i> Thêm nhà cung cấp</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table datatable id="example" class="table table-hover table-bordered dt-bootstrap" cellspacing="0" width="100%">
+            <thead class="table-danger text-center text-uppercase">
+              <tr>
+                <th scope="col" style="width: 10%">#</th>
+                <th scope="col" style="width: 25%">Tên nhà cung cấp</th>
+                <th scope="col" style="width: 30%">Địa chỉ</th>
+                <th scope="col" style="width: 20%">Số điện thoại</th>
+                <th scope="col" style="width: 15%"></th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <tr *ngFor="let NhaCungCap of nhaCungCapList, let i =index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{NhaCungCap.NCC_Ten}}</td>
+                <td>{{NhaCungCap.NCC_DiaChi}}</td>
+                <td>{{NhaCungCap.NCC_SDT}}</td>
+                <td> <button type="button" class="btn btn-success" data-toggle="modal"(click)="getNhaCungCap(NhaCungCap.NCC_ID)" data-target="#Edit">
+                    <i class="fa fa-edit text-white"></i></button>
+                  &emsp; <button type="button" class="btn btn-danger" data-toggle="modal" (click)="onNhaCungCapDelete(NhaCungCap.NCC_ID)"><i
+                      class="fa fa-trash text-white"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+  id="AddSupp">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-uppercase" id="exampleModalLabel">Thêm nhà cung cấp</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup] = "addNhaCungCap">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tên nhà cung cấp</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp" name="TenNCC" formControlName = "nameSupplier">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Địa chỉ</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Nhập địa chỉ nhà cung cấp" name="DiaChiNCC" formControlName = "addressSupplier">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Số điện thoại</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" placeholder="Nhập số điện thoại nhà cung cấp" name="SDT_NCC" formControlName = "phoneSupplier">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" (click)="onNhaCungCapAdd()"data-dismiss="modal" class="btn btn-primary">Thêm nhà cung cấp</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+  id="Edit">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-uppercase" id="exampleModalLabel">Chỉnh sửa nhà cung cấp</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup] = "editNhaCungCap">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tên nhà cung cấp</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp" name="TenNCC" formControlName = "nameSupplier">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Địa chỉ</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" placeholder="Nhập địa chỉ nhà cung cấp" name="DiaChiNCC" formControlName = "addressSupplier">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Số điện thoại</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" placeholder="Nhập số điện thoại nhà cung cấp" name="SDT_NCC" formControlName = "phoneSupplier">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit"(click)=" onNhaCungCapEdit()" data-dismiss="modal" class="btn btn-primary">Cập nhập</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+  id="Delete">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-uppercase" id="exampleModalLabel">Xóa nhà cung cấp</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label class="col-12 col-form-label text-center">
+              <h2>BẠN CÓ CHẮC MUỐN XÓA NHÀ CUNG CẤP NÀY</h2>
+            </label>
+            <input type="text" class="form-control" name="MaNCC" hidden>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-danger">Xác nhận</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function () {
+      $('#example').DataTable();
+    });
+
+  </script>
